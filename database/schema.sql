@@ -49,7 +49,8 @@ CREATE TABLE orders (
         'cancelled'
     ) DEFAULT 'pending',
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_orders_created_at (created_at)
 );
 
 CREATE TABLE order_items (
