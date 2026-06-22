@@ -15,7 +15,7 @@ class Product
         $this->db = $database->getConnection();
     }
 
-    // 1. Get all products
+    // Get all products
     public function getAll(): array
     {
         $stmt = $this->db->prepare("SELECT * FROM products");
@@ -24,18 +24,16 @@ class Product
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // 2. Get single product by ID
-    public function getById(int $id): ?array
+    // Get single product by ID (USED BY ORDER SYSTEM)
+    public function find($id)
     {
-        $stmt = $this->db->prepare("SELECT * FROM products WHERE id = :id");
-        $stmt->execute(['id' => $id]);
+        $stmt = $this->db->prepare("SELECT * FROM products WHERE id = ?");
+        $stmt->execute([$id]);
 
-        $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return $product ?: null;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // 3. Create product
+    // Create product
     public function create(array $data): bool
     {
         $stmt = $this->db->prepare("
@@ -50,5 +48,17 @@ class Product
             'stock_qty' => $data['stock_qty'],
             'low_threshold' => $data['low_threshold']
         ]);
+    }
+
+    // Reduce stock (USED BY ORDER SYSTEM)
+    public function reduceStock($id, $qty): bool
+    {
+        $stmt = $this->db->prepare("
+            UPDATE products 
+            SET stock_qty = stock_qty - ?
+            WHERE id = ?
+        ");
+
+        return $stmt->execute([$qty, $id]);
     }
 }
