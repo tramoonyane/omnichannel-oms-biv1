@@ -2,7 +2,7 @@
 
 namespace Src\Controllers;
 
-use Src\Services\AnalyticsService;
+use Src\Services\Analytics\AnalyticsService;
 
 class AnalyticsController
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Src\Services;
+namespace Src\Services\Presentation;
 
-use Src\Services\AnalyticsService;
+use Src\Services\Analytics\AnalyticsService;
 
 class ChartService
 {
@@ -31,8 +31,7 @@ class ChartService
                 [
                     "dataKey" => "revenue",
                     "label" => "Revenue",
-                    "valueFormat" => "raw",
-                    "valuePrefix" => ""
+                    "valueFormat" => "raw"
                 ],
                 [
                     "dataKey" => "orders",
@@ -75,11 +74,11 @@ class ChartService
     }
 
     /**
-     * INVENTORY DISTRIBUTION CHART
+     * INVENTORY DISTRIBUTION CHART (LOW STOCK VIEW)
      */
     public function inventoryDistribution(): array
     {
-        $products = $this->analytics->getLowStockProducts();
+        $data = $this->analytics->getLowStockProducts();
 
         return [
             "chartType" => "bar",
@@ -91,11 +90,11 @@ class ChartService
             "series" => [
                 [
                     "dataKey" => "stock_qty",
-                    "label" => "Stock",
+                    "label" => "Stock Level",
                     "valueFormat" => "integer"
                 ]
             ],
-            "data" => $products
+            "data" => $data
         ];
     }
 }

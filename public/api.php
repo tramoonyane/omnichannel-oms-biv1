@@ -5,7 +5,6 @@
 | CORE BOOTSTRAP
 |--------------------------------------------------------------------------
 */
-
 require_once __DIR__ . '/../src/Core/Router.php';
 require_once __DIR__ . '/../src/Core/Database.php';
 require_once __DIR__ . '/../src/Core/Auth.php';
@@ -15,7 +14,6 @@ require_once __DIR__ . '/../src/Core/Auth.php';
 | MODELS
 |--------------------------------------------------------------------------
 */
-
 require_once __DIR__ . '/../src/Models/Product.php';
 require_once __DIR__ . '/../src/Models/Order.php';
 require_once __DIR__ . '/../src/Models/User.php';
@@ -26,15 +24,33 @@ require_once __DIR__ . '/../src/Models/OrderItem.php';
 | MIDDLEWARE
 |--------------------------------------------------------------------------
 */
-
 require_once __DIR__ . '/../src/Middleware/AuthMiddleware.php';
+
+/*
+|--------------------------------------------------------------------------
+| SERVICES (NEW STRUCTURE)
+|--------------------------------------------------------------------------
+*/
+
+// Inventory & Sales Analytics (NEW ARCHITECTURE)
+require_once __DIR__ . '/../src/Services/Analytics/InventoryAnalyticsService.php';
+require_once __DIR__ . '/../src/Services/Analytics/SalesAnalyticsService.php';
+require_once __DIR__ . '/../src/Services/Analytics/AnalyticsService.php';
+
+// Presentation Layer
+require_once __DIR__ . '/../src/Services/Presentation/ChartService.php';
+require_once __DIR__ . '/../src/Services/Presentation/DashboardService.php';
+
+// Core Services
+require_once __DIR__ . '/../src/Services/OrderService.php';
+require_once __DIR__ . '/../src/Services/InventoryService.php';
+require_once __DIR__ . '/../src/Services/AuthService.php';
 
 /*
 |--------------------------------------------------------------------------
 | CONTROLLERS
 |--------------------------------------------------------------------------
 */
-
 require_once __DIR__ . '/../src/Controllers/InventoryController.php';
 require_once __DIR__ . '/../src/Controllers/OrderController.php';
 require_once __DIR__ . '/../src/Controllers/AnalyticsController.php';
@@ -42,23 +58,9 @@ require_once __DIR__ . '/../src/Controllers/DashboardController.php';
 
 /*
 |--------------------------------------------------------------------------
-| SERVICES
-|--------------------------------------------------------------------------
-*/
-
-require_once __DIR__ . '/../src/Services/OrderService.php';
-require_once __DIR__ . '/../src/Services/InventoryService.php';
-require_once __DIR__ . '/../src/Services/AnalyticsService.php';
-require_once __DIR__ . '/../src/Services/DashboardService.php';
-require_once __DIR__ . '/../src/Services/ChartService.php';
-require_once __DIR__ . '/../src/Services/AuthService.php';
-
-/*
-|--------------------------------------------------------------------------
 | USE STATEMENTS
 |--------------------------------------------------------------------------
 */
-
 use Src\Core\Router;
 use Src\Controllers\InventoryController;
 
@@ -67,24 +69,19 @@ use Src\Controllers\InventoryController;
 | INIT
 |--------------------------------------------------------------------------
 */
-
 header('Content-Type: application/json');
 
 $router = new Router();
 
 /*
 |--------------------------------------------------------------------------
-| CONTROLLERS + SERVICES (INITIALIZED BEFORE ROUTES)
+| INIT SHARED OBJECTS
 |--------------------------------------------------------------------------
 */
-
 $middleware = new \Src\Middleware\AuthMiddleware();
-
 $dashboard = new \Src\Controllers\DashboardController();
-
 $analytics = new \Src\Controllers\AnalyticsController();
-
-$charts = new \Src\Services\ChartService();
+$charts = new \Src\Services\Presentation\ChartService();
 
 /*
 |--------------------------------------------------------------------------
@@ -174,10 +171,9 @@ $router->get('/api/v1/inventory', function () {
 
 /*
 |--------------------------------------------------------------------------
-| DISPATCH REQUEST
+| DISPATCH
 |--------------------------------------------------------------------------
 */
-
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 $response = $router->dispatch($uri, $_SERVER['REQUEST_METHOD']);

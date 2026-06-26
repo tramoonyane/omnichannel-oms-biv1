@@ -1,8 +1,8 @@
 <?php
 
-namespace Src\Services;
+namespace Src\Services\Presentation;
 
-use Src\Services\AnalyticsService;
+use Src\Services\Analytics\AnalyticsService;
 use Src\Core\Auth;
 
 class DashboardService
@@ -38,13 +38,11 @@ class DashboardService
             "alerts" => $alerts
         ];
 
-        // ADMIN VIEW (FULL ACCESS)
         if ($role === "admin") {
             $response["sales"] = $sales;
             $response["top_products"] = $topProducts;
         }
 
-        // MANAGER VIEW (LIMITED)
         if ($role === "manager") {
             $response["sales"] = $sales;
         }

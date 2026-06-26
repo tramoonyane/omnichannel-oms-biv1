@@ -2,7 +2,7 @@
 
 namespace Src\Controllers;
 
-use Src\Services\DashboardService;
+use Src\Services\Presentation\DashboardService;
 
 class DashboardController
 {
