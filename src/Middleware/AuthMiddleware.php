@@ -2,41 +2,53 @@
 
 namespace Src\Middleware;
 
-use Src\Services\AuthService;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as Handler;
+use Slim\Psr7\Response as SlimResponse;
+use Src\Core\Jwt;
 
 class AuthMiddleware
 {
-    private AuthService $auth;
-
-    public function __construct()
+    public function __invoke(Request $request, Handler $handler): Response
     {
-        $this->auth = new AuthService();
+        $authHeader = $request->getHeaderLine('Authorization');
+
+        if (empty($authHeader)) {
+            return $this->unauthorized('Missing Authorization header.');
+        }
+
+        if (!preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
+            return $this->unauthorized('Invalid Authorization header format.');
+        }
+
+        $token = trim($matches[1]);
+
+        try {
+
+            $decoded = Jwt::validate($token);
+
+            $request = $request->withAttribute('user', (array) $decoded->user);
+
+            return $handler->handle($request);
+
+        } catch (\Throwable $e) {
+
+            return $this->unauthorized('Invalid or expired token.');
+        }
     }
 
-    /**
-     * Protect route and validate token + role
-     */
-    public function handle(array $allowedRoles = []): array
+    private function unauthorized(string $message): Response
     {
-        $headers = getallheaders();
+        $response = new SlimResponse();
 
-        if (!isset($headers['Authorization'])) {
-            return ["error" => "Unauthorized - No token"];
-        }
+        $response->getBody()->write(json_encode([
+            'status'  => 'error',
+            'message' => $message
+        ]));
 
-        $token = str_replace("Bearer ", "", $headers['Authorization']);
-
-        $user = $this->auth->parseToken($token);
-
-        if (!$user) {
-            return ["error" => "Invalid token"];
-        }
-
-        // ROLE CHECK
-        if (!empty($allowedRoles) && !in_array($user['role'], $allowedRoles)) {
-            return ["error" => "Forbidden - insufficient permissions"];
-        }
-
-        return $user;
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(401);
     }
 }

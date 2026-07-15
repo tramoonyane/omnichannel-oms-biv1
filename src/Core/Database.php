@@ -27,6 +27,12 @@ class Database
                 PDO::ATTR_ERRMODE,
                 PDO::ERRMODE_EXCEPTION
             );
+            
+            // FORCE ASSOCIATIVE ARRAYS SYSTEM-WIDE
+            $this->connection->setAttribute(
+                PDO::ATTR_DEFAULT_FETCH_MODE,
+                PDO::FETCH_ASSOC
+            );
 
         } catch (PDOException $e) {
             die("Database Connection Failed: " . $e->getMessage());
