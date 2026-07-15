@@ -3,7 +3,7 @@
         'name' => 'tramoonyane/omnichannel-oms-bi',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '92dfbc24cae11adfe609a53e9a750d27bdd32df2',
+        'reference' => '625a0f30de7d3415f8f21061eb3faca86a73740b',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -178,7 +178,7 @@
         'tramoonyane/omnichannel-oms-bi' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '92dfbc24cae11adfe609a53e9a750d27bdd32df2',
+            'reference' => '625a0f30de7d3415f8f21061eb3faca86a73740b',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

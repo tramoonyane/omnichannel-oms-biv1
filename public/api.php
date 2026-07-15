@@ -118,7 +118,7 @@ $app->group('/api/v1', function ($group) {
             $controller = new DashboardController();
 
             $response->getBody()->write(
-                json_encode($controller->summary())
+                json_encode($controller->summary($request))
             );
 
             return $response;

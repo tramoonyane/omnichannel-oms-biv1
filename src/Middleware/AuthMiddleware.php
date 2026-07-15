@@ -34,7 +34,7 @@ class AuthMiddleware
 
         } catch (\Throwable $e) {
 
-            return $this->unauthorized('Invalid or expired token.');
+            return $this->unauthorized($e->getMessage());
         }
     }
 

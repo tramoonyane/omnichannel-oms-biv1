@@ -3,6 +3,7 @@
 namespace Src\Controllers;
 
 use Src\Services\Presentation\DashboardService;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class DashboardController
 {
@@ -13,8 +14,10 @@ class DashboardController
         $this->service = new DashboardService();
     }
 
-    public function summary(): array
+    public function summary(Request $request): array
     {
-        return $this->service->getSummary();
+        $user = $request->getAttribute('user');
+        
+        return $this->service->getSummary($user['role']);
     }
 }

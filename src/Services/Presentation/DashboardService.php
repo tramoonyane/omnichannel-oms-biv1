@@ -3,7 +3,6 @@
 namespace Src\Services\Presentation;
 
 use Src\Services\Analytics\AnalyticsService;
-use Src\Core\Auth;
 
 class DashboardService
 {
@@ -14,10 +13,8 @@ class DashboardService
         $this->analytics = new AnalyticsService();
     }
 
-    public function getSummary(): array
+    public function getSummary(string $role): array
     {
-        $role = Auth::userRole();
-
         $inventory = $this->analytics->getInventoryOverview();
         $lowStock = $this->analytics->getLowStockProducts();
         $sales = $this->analytics->getSalesOverview();
