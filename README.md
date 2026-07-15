@@ -2,169 +2,263 @@
 
 ## Overview
 
-OmniChannel OMS-BI (Order Management System & Business Intelligence Platform) is a decoupled inventory and order management application designed to simulate enterprise-level e-commerce operations.
+**OmniChannel OMS-BI (Order Management System & Business Intelligence Platform)** is a decoupled full-stack application that simulates enterprise-level omnichannel retail operations.
 
-The system centralizes inventory, order processing, analytics, and user management into a single platform capable of supporting multiple sales channels through standardized API contracts.
+The system centralizes inventory management, order processing, business analytics, and secure user authentication into a single platform capable of supporting multiple sales channels through standardized RESTful API contracts.
 
-The primary objective of the project is to demonstrate full-stack software engineering principles, including:
+The project demonstrates modern backend architecture by separating presentation, business logic, authentication, authorization, and data access into independent layers while exposing a JSON-based API consumed by an independent frontend.
 
-- Relational database design
-- API development
+---
+
+# Project Goals
+
+The primary objective of the project is to demonstrate practical software engineering principles through the development of a scalable business application.
+
+The project focuses on:
+
+- Software architecture
+- REST API development
 - Business logic implementation
-- Frontend data consumption
-- Inventory management workflows
-- Order lifecycle management
-- Analytics and reporting
-- System evolution across multiple technology stacks
+- Relational database design
+- Authentication and authorization
+- Inventory management
+- Order management
+- Business intelligence and analytics
+- Frontend-backend separation
+- Technology-independent system design
 
 ---
 
-## Core Business Domains
+# Technology Stack
 
-The platform is built around four primary business domains:
+## Backend
 
-### Inventory Management
+- PHP 8
+- Slim Framework 4
+- MySQL
+- Composer
+- JSON Web Tokens (JWT)
 
-Tracks products, stock quantities, inventory thresholds, and warehouse-related adjustments.
+## Frontend
 
-### Order Management
+- HTML5
+- CSS3
+- Vanilla JavaScript
 
-Handles order creation, order status transitions, and order-item relationships.
+## Development Tools
 
-### User Management
+- Git
+- GitHub
+- Postman
+- XAMPP
 
-Provides role-based access structures for administrators, managers, and operational users.
+---
 
-### Analytics
+# Core Business Domains
 
-Generates business insights from operational data including:
+The platform is built around four primary business domains.
 
-- Total orders
-- Revenue metrics
-- Inventory health
+## Inventory Management
+
+Responsible for:
+
+- Product management
+- Stock tracking
+- Inventory valuation
 - Low-stock monitoring
-- Order pipeline performance
 
 ---
 
-## Architectural Philosophy
+## Order Management
 
-This project follows a decoupled application architecture.
+Responsible for:
 
-The frontend and backend operate as independent layers communicating exclusively through JSON-based API contracts.
+- Order creation
+- Order processing
+- Order-item relationships
+- Sales transactions
+
+---
+
+## Authentication & Authorization
+
+Responsible for:
+
+- Secure login
+- JWT generation
+- Token validation
+- Role-based authorization
+- Protected API access
+
+Supported roles currently include:
+
+- Admin
+- Manager
+
+---
+
+## Business Intelligence
+
+Provides operational insights including:
+
+- Sales overview
+- Revenue analysis
+- Inventory overview
+- Low-stock alerts
+- Top-selling products
+- Dashboard summaries
+
+---
+
+# System Architecture
+
+The application follows a decoupled architecture where the frontend and backend evolve independently.
 
 ```
 Frontend
-    │
-    ▼
+      │
+      ▼
 REST API
-    │
-    ▼
-Business Logic
-    │
-    ▼
+      │
+      ▼
+Controllers
+      │
+      ▼
+Presentation Services
+      │
+      ▼
+Business Services
+      │
+      ▼
 Database
 ```
 
 The frontend never communicates directly with the database.
 
-All requests flow through backend controllers where validation, business rules, and data processing occur before persistence.
+All requests pass through backend controllers where validation, business rules, and processing occur before data persistence.
 
 ---
 
-## How This Differs From Traditional PHP Applications
+# Backend Architecture
 
-Traditional PHP applications often combine presentation logic, business logic, and database access within the same request lifecycle.
+The backend follows a layered architecture that separates responsibilities across multiple application layers.
+
+```
+HTTP Request
+      │
+      ▼
+JWT Authentication Middleware
+      │
+      ▼
+Role Authorization Middleware
+      │
+      ▼
+Controller
+      │
+      ▼
+Presentation Service
+      │
+      ▼
+Business Service
+      │
+      ▼
+Database
+```
+
+This design promotes:
+
+- Loose coupling
+- High cohesion
+- Maintainability
+- Scalability
+- Testability
+
+---
+
+# Authentication
+
+The backend uses **JSON Web Tokens (JWT)** for stateless authentication.
+
+Authentication flow:
+
+```
+Client Login
+      │
+      ▼
+Credential Validation
+      │
+      ▼
+JWT Generation
+      │
+      ▼
+Bearer Token
+      │
+      ▼
+Authenticated Requests
+      │
+      ▼
+JWT Authentication Middleware
+      │
+      ▼
+Role Authorization Middleware
+      │
+      ▼
+Protected Endpoint
+```
+
+After successful authentication, every protected endpoint validates the JWT before business logic is executed.
+
+---
+
+# Authorization
+
+Authorization is enforced through dedicated middleware.
+
+Instead of allowing business services to determine the authenticated user, middleware attaches the authenticated user to the request.
+
+Controllers then pass only the required data (such as the user's role) into the service layer.
 
 Example:
 
 ```
-Browser
-   │
-   ▼
-PHP Page
-   │
-   ▼
-Database
-   │
-   ▼
-HTML Generated By PHP
-   │
-   ▼
-Browser
+HTTP Request
+      │
+      ▼
+Authenticated User
+      │
+      ▼
+Dashboard Controller
+      │
+      ▼
+Dashboard Service(role)
 ```
 
-In this model, PHP renders HTML directly on the server before returning a completed page to the browser.
+This keeps business services independent of:
 
-This project intentionally avoids that approach.
-
-Instead, the application follows a frontend-backend separation model.
-
-```
-Browser
-   │
-   ▼
-HTML + CSS + JavaScript
-   │
-   ▼
-REST API (PHP)
-   │
-   ▼
-Database
-```
-
-The backend returns JSON responses rather than rendered HTML.
-
-Frontend components dynamically consume and display data using JavaScript.
-
-This architecture creates a clear separation of responsibilities and makes future migrations easier.
+- HTTP
+- JWT
+- Middleware
+- Authentication implementation
 
 ---
 
-## Benefits Of The Decoupled Architecture
+# REST API
 
-### Technology Independence
+The backend exposes RESTful JSON endpoints for:
 
-The frontend can be replaced without redesigning the backend.
+- Authentication
+- Dashboard
+- Inventory
+- Orders
+- Sales Analytics
+- Inventory Analytics
+- Chart Data
 
-Examples:
-
-- Vanilla JavaScript
-- React
-- Vue
-- Angular
-
-### Backend Flexibility
-
-The backend implementation can evolve without affecting frontend behavior.
-
-Examples:
-
-- PHP
-- Python
-- Node.js
-
-### Database Flexibility
-
-Data storage engines can be replaced while preserving API contracts.
-
-Examples:
-
-- MySQL
-- PostgreSQL
-- MongoDB
-
-### Maintainability
-
-Business rules remain centralized inside backend services rather than being distributed throughout the user interface.
-
-### Scalability
-
-The architecture mirrors patterns commonly used in modern enterprise systems where frontend, backend, and data layers evolve independently.
+Protected endpoints require a valid JWT bearer token.
 
 ---
 
-## Request Lifecycle
+# Request Lifecycle
 
 Example order creation workflow:
 
@@ -175,7 +269,10 @@ User Creates Order
 Frontend Form
         │
         ▼
-POST /api/v1/orders/create
+POST /api/v1/orders
+        │
+        ▼
+Authentication Middleware
         │
         ▼
 Order Controller
@@ -193,31 +290,76 @@ JSON Response
 Frontend Update
 ```
 
-This flow represents the core pattern used throughout the application.
+This request flow is consistently applied across the application.
 
 ---
 
-## Project Goals
+# Current Features
 
-The purpose of this project is to demonstrate:
-
-- Software architecture design
-- Backend engineering principles
-- Database modeling
-- API development
-- Frontend integration
-- Business process implementation
-
-while maintaining a technology-agnostic system design that can evolve over time without changing the underlying business concepts.
+- JWT Authentication
+- Role-Based Authorization
+- RESTful JSON API
+- Dashboard Summary
+- Inventory Management
+- Order Management
+- Sales Analytics
+- Inventory Analytics
+- Business Intelligence Reporting
+- Chart Data APIs
+- Layered Backend Architecture
+- Decoupled Frontend and Backend
 
 ---
 
-## Design Principle
+# Architectural Philosophy
 
 Business concepts remain constant.
 
 Technologies evolve.
 
-Products, inventory, orders, users, and analytics are the permanent foundations of the system.
+Products, inventory, orders, users, analytics, and business workflows are the permanent foundations of the system.
 
-Frameworks, libraries, databases, and programming languages are implementation details used to express those concepts.
+Programming languages, frameworks, databases, and frontend technologies are implementation details that can evolve without changing the underlying business model.
+
+This philosophy allows the project to adapt to future technologies while preserving the core business domain.
+
+---
+
+# Future Enhancements
+
+The current backend represents the project's core functionality.
+
+Future improvements may include:
+
+- Frontend completion
+- Interactive dashboards
+- Advanced filtering and search
+- Pagination
+- API documentation (OpenAPI / Swagger)
+- Unit and integration testing
+- Docker support
+- CI/CD pipeline
+- Audit logging
+- Refresh tokens
+- Performance optimization
+- Caching
+
+---
+
+# Project Status
+
+✅ Backend Core Complete
+
+- JWT Authentication implemented
+- Role-Based Authorization implemented
+- REST API completed
+- Business services implemented
+- Analytics completed
+- Inventory module completed
+- Order management completed
+
+🚧 Frontend Development In Progress
+
+The current focus is completing the frontend application that consumes the REST API.
+
+After frontend completion, future work will primarily consist of enhancements, testing, documentation improvements, and deployment.
