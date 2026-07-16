@@ -1,0 +1,1 @@
+export const API_BASE_URL = "http://oms.local/api/v1";
