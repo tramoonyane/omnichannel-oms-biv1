@@ -7,56 +7,99 @@ from "../utils/auth.js";
 
 export function renderNavbar() {
 
+
     const navbar =
-        document.getElementById("navbar");
+        document.getElementById(
+            "navbar"
+        );
+
 
     const user =
         getUser();
 
 
+
     navbar.innerHTML = `
 
-        <div
-            style="
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-            ">
 
-            <h2>
-                OmniChannel OMS-BI
-            </h2>
+        <header class="navbar">
 
-            <div>
 
-                <strong>
+            <div class="navbar-brand">
 
-                    ${user.email}
 
-                </strong>
+                <h1>
 
-                |
+                    OmniChannel OMS-BI
 
-                ${user.role}
+                </h1>
 
-                <button id="logoutBtn">
+
+                <span>
+
+                    Inventory Intelligence Platform
+
+                </span>
+
+
+            </div>
+
+
+
+
+            <div class="navbar-user">
+
+
+                <div class="user-info">
+
+
+                    <strong>
+
+                        ${user.email}
+
+                    </strong>
+
+
+                    <small>
+
+                        ${user.role}
+
+                    </small>
+
+
+                </div>
+
+
+
+                <button
+
+                    id="logoutBtn"
+
+                    class="logout-btn">
 
                     Logout
 
                 </button>
 
+
             </div>
 
-        </div>
+
+        </header>
+
 
     `;
 
 
+
     document
-        .getElementById("logoutBtn")
+        .getElementById(
+            "logoutBtn"
+        )
         .addEventListener(
             "click",
             logout
         );
+
 
 }

@@ -2,30 +2,42 @@ export function renderStatCard(
     container,
     title,
     value
-) {
+){
 
-    container.innerHTML += `
 
-        <div
-            style="
-                border:1px solid #ddd;
-                padding:20px;
-                margin:10px;
-                border-radius:8px;
-                min-width:180px;
-            "
-        >
+    const card =
+        document.createElement(
+            "div"
+        );
 
-            <h4>
-                ${title}
-            </h4>
 
-            <h2>
-                ${value}
-            </h2>
+    card.className =
+        "stat-card";
+
+
+    card.innerHTML = `
+
+
+        <div class="stat-title">
+
+            ${title}
 
         </div>
 
+
+        <div class="stat-value">
+
+            ${value}
+
+        </div>
+
+
     `;
+
+
+    container.appendChild(
+        card
+    );
+
 
 }

@@ -1,63 +1,92 @@
-export function renderSidebar() {
+export function renderSidebar(){
+
 
     const sidebar =
         document.getElementById(
             "sidebar"
         );
 
+
+    const currentPage =
+        window.location.pathname
+        .split("/")
+        .pop();
+
+
+
+    const menuItems = [
+
+        {
+            name:"Dashboard",
+            link:"dashboard.html"
+        },
+
+        {
+            name:"Inventory",
+            link:"inventory.html"
+        },
+
+        {
+            name:"Orders",
+            link:"orders.html"
+        },
+
+        {
+            name:"Analytics",
+            link:"analytics.html"
+        }
+
+    ];
+
+
+
     sidebar.innerHTML = `
 
-        <ul
-            style="list-style:none;padding:0;">
 
-            <li>
+        <nav class="sidebar-nav">
 
-                <a href="dashboard.html">
 
-                    Dashboard
+            <ul>
 
-                </a>
 
-            </li>
+                ${
+                    menuItems.map(item => `
 
-            <br>
 
-            <li>
+                        <li class="
+                            ${
+                                currentPage === item.link
+                                ?
+                                "active"
+                                :
+                                ""
+                            }
+                        ">
 
-                <a href="inventory.html">
 
-                    Inventory
+                            <a href="${item.link}">
 
-                </a>
 
-            </li>
+                                ${item.name}
 
-            <br>
 
-            <li>
+                            </a>
 
-                <a href="orders.html">
 
-                    Orders
+                        </li>
 
-                </a>
 
-            </li>
+                    `).join("")
+                }
 
-            <br>
 
-            <li>
+            </ul>
 
-                <a href="analytics.html">
 
-                    Analytics
+        </nav>
 
-                </a>
-
-            </li>
-
-        </ul>
 
     `;
+
 
 }

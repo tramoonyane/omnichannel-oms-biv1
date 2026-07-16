@@ -19,3 +19,24 @@
     margin-top:30px;
 
 }
+
+@media(max-width:768px){
+
+
+    .main {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    #sidebar {
+
+        width:
+            100%;
+
+    }
+
+
+}
