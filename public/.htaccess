@@ -1,6 +1,11 @@
 RewriteEngine On
 
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 
+# Do not rewrite existing files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+
+# Send API requests to Slim
 RewriteRule ^ api.php [QSA,L]
