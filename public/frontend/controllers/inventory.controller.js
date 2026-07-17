@@ -20,6 +20,10 @@ import {
 from "../components/table.js";
 
 
+import { renderStatCard }
+from "../components/stat-card.js";
+
+
 
 requireAuth();
 
@@ -49,33 +53,209 @@ async function loadInventory(){
 
 
 
+        /*
+        |
+        | Prepare inventory presentation data
+        |
+        */
+
+
+        const inventoryData =
+            data.map(product => {
+
+
+                return {
+
+
+                    ...product,
+
+
+                    status:
+
+
+                        product.stock_qty <= product.low_threshold
+
+
+                        ?
+
+
+                        `
+                        <span class="stock-status stock-low">
+
+                            Low Stock
+
+                        </span>
+                        `
+
+
+                        :
+
+
+                        `
+                        <span class="stock-status stock-ok">
+
+                            Healthy
+
+                        </span>
+                        `
+
+
+                };
+
+
+            });
+
+
+
+
+        /*
+        |
+        | Inventory KPI calculations
+        |
+        */
+
+
+        const totalProducts =
+            data.length;
+
+
+
+        const totalUnits =
+            data.reduce(
+
+                (sum, product) => {
+
+                    return sum + product.stock_qty;
+
+                },
+
+                0
+
+            );
+
+
+
+        const lowStockItems =
+            data.filter(
+
+                product =>
+
+                    product.stock_qty <= product.low_threshold
+
+            ).length;
+
+
+
+
+
+        /*
+        |
+        | Page structure
+        |
+        */
+
+
         inventory.innerHTML = `
 
 
-            <h2>
-
-                Inventory Management
-
-            </h2>
+<h2>
+Inventory Management
+</h2>
 
 
-            <p>
 
-                Current product stock levels
+<p class="muted">
 
-            </p>
+Monitor product availability and stock levels
 
-
-            <hr>
+</p>
 
 
-            <div id="inventory-table">
 
-            </div>
+
+<div
+id="inventory-stats"
+class="stats-grid">
+
+</div>
+
+
+
+
+<div class="section-card">
+
+
+<div id="inventory-table">
+
+
+</div>
+
+
+</div>
 
 
         `;
 
+
+
+
+        /*
+        |
+        | Render KPI cards
+        |
+        */
+
+
+        const stats =
+            document.getElementById(
+                "inventory-stats"
+            );
+
+
+
+        renderStatCard(
+
+            stats,
+
+            "Total Products",
+
+            totalProducts
+
+        );
+
+
+
+        renderStatCard(
+
+            stats,
+
+            "Total Units",
+
+            totalUnits
+
+        );
+
+
+
+        renderStatCard(
+
+            stats,
+
+            "Low Stock Items",
+
+            lowStockItems
+
+        );
+
+
+
+
+
+        /*
+        |
+        | Render inventory table
+        |
+        */
 
 
         const table =
@@ -92,6 +272,7 @@ async function loadInventory(){
 
 
             [
+
 
                 {
                     key:"id",
@@ -126,16 +307,23 @@ async function loadInventory(){
                 {
                     key:"low_threshold",
                     label:"Low Stock Limit"
+                },
+
+
+                {
+                    key:"status",
+                    label:"Status"
                 }
 
 
             ],
 
 
-            data
+            inventoryData
 
 
         );
+
 
 
     }

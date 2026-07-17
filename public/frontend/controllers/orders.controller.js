@@ -20,6 +20,10 @@ import {
 from "../components/table.js";
 
 
+import { renderStatCard }
+from "../components/stat-card.js";
+
+
 
 requireAuth();
 
@@ -49,33 +53,228 @@ async function loadOrders(){
 
 
 
+        /*
+        |
+        | Prepare order presentation data
+        |
+        */
+
+
+        const ordersData =
+
+            data.map(order => {
+
+
+                return {
+
+
+                    ...order,
+
+
+                    order_status:
+
+
+                        order.order_status === "pending"
+
+
+                        ?
+
+
+                        `
+                        <span class="stock-status stock-warning">
+
+                            Pending
+
+                        </span>
+                        `
+
+
+                        :
+
+
+                        order.order_status === "completed"
+
+
+                        ?
+
+
+                        `
+                        <span class="stock-status stock-ok">
+
+                            Completed
+
+                        </span>
+                        `
+
+
+                        :
+
+
+                        `
+                        <span class="stock-status stock-low">
+
+                            ${order.order_status}
+
+                        </span>
+                        `
+
+
+                };
+
+
+            });
+
+
+
+
+
+        /*
+        |
+        | KPI calculations
+        |
+        */
+
+
+        const totalOrders =
+            data.length;
+
+
+
+        const pendingOrders =
+            data.filter(
+
+                order =>
+
+                    order.order_status === "pending"
+
+            ).length;
+
+
+
+        const completedOrders =
+            data.filter(
+
+                order =>
+
+                    order.order_status === "completed"
+
+            ).length;
+
+
+
+
+
+        /*
+        |
+        | Page structure
+        |
+        */
+
+
         orders.innerHTML = `
 
 
-            <h2>
+<h2>
 
-                Orders Management
+Orders Management
 
-            </h2>
-
-
-            <p>
-
-                Order processing overview
-
-            </p>
+</h2>
 
 
-            <hr>
+
+<p class="muted">
+
+Order processing overview
+
+</p>
 
 
-            <div id="orders-table">
-
-            </div>
 
 
-        `;
+<div
+id="orders-stats"
+class="stats-grid">
 
+</div>
+
+
+
+
+<div class="section-card">
+
+
+<div id="orders-table">
+
+
+</div>
+
+
+</div>
+
+
+`;
+
+
+
+
+
+        /*
+        |
+        | Render KPI cards
+        |
+        */
+
+
+        const stats =
+            document.getElementById(
+                "orders-stats"
+            );
+
+
+
+        renderStatCard(
+
+            stats,
+
+            "Total Orders",
+
+            totalOrders
+
+        );
+
+
+
+        renderStatCard(
+
+            stats,
+
+            "Pending Orders",
+
+            pendingOrders
+
+        );
+
+
+
+        renderStatCard(
+
+            stats,
+
+            "Completed Orders",
+
+            completedOrders
+
+        );
+
+
+
+
+
+        /*
+        |
+        | Render orders table
+        |
+        */
 
 
         const table =
@@ -92,6 +291,7 @@ async function loadOrders(){
 
 
             [
+
 
                 {
                     key:"id",
@@ -132,7 +332,7 @@ async function loadOrders(){
             ],
 
 
-            data
+            ordersData
 
 
         );

@@ -248,3 +248,94 @@
         var(--primary);
 
 }
+
+/* =====================
+   SECTION CARD
+===================== */
+
+
+.section-card {
+
+    background:
+        var(--card);
+
+
+    padding:
+        25px;
+
+
+    border-radius:
+        var(--radius);
+
+
+    box-shadow:
+        var(--shadow);
+
+    margin-top:
+        10px;
+
+}
+
+
+
+/* =====================
+   MUTED TEXT
+===================== */
+
+
+.muted {
+
+    color:
+        var(--muted);
+
+}
+
+/* =====================
+   STOCK STATUS BADGES
+===================== */
+
+
+.stock-status {
+
+    padding:
+        5px 12px;
+
+
+    border-radius:
+        20px;
+
+
+    font-size:
+        12px;
+
+
+    font-weight:
+        bold;
+
+}
+
+
+
+.stock-ok {
+
+    background:
+        #dcfce7;
+
+
+    color:
+        var(--success);
+
+}
+
+
+
+.stock-low {
+
+    background:
+        #fee2e2;
+
+
+    color:
+        var(--danger);
+
+}
