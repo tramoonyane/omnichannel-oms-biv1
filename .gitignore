@@ -5,3 +5,11 @@
 *.log
 
 /public/test-*.php
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
+'
+login.md

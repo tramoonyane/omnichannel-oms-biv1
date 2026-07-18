@@ -13,8 +13,8 @@ from "../components/stat-card.js";
 import { renderTable }
 from "../components/table.js";
 
-import { renderChartPlaceholder }
-from "../components/chart-placeholder.js";
+import { renderLineChart, renderBarChart }
+from "../components/chart.js";
 
 import {
 
@@ -46,15 +46,26 @@ const stats =
         "stats"
     );
 
-const dailySales =
+const dailyRevenue =
     document.getElementById(
-        "daily-sales"
+        "daily-revenue"
+    );
+
+
+const dailyOrders =
+    document.getElementById(
+        "daily-orders"
     );
 
 const topProducts =
     document.getElementById(
         "top-products"
     );
+
+const topProductsChart =
+    document.getElementById(
+        "top-products-chart"
+    );    
 
 const highStock =
     document.getElementById(
@@ -146,16 +157,63 @@ async function loadAnalytics() {
         );
 
 
-        renderChartPlaceholder(
+        renderLineChart(
 
-            dailySales,
+    dailyRevenue,
 
-            "Daily Sales",
+    "Daily Revenue Trend",
 
-            daily
+    daily.map(
+        item => item.date
+    ),
 
-        );
+    daily.map(
+        item => Number(item.revenue)
+    ),
 
+    "Revenue"
+
+);
+
+
+
+renderLineChart(
+
+    dailyOrders,
+
+    "Daily Orders Trend",
+
+    daily.map(
+        item => item.date
+    ),
+
+    daily.map(
+        item => item.orders
+    ),
+
+    "Orders"
+
+);
+        renderBarChart(
+
+    topProductsChart,
+
+    "Top Products by Revenue",
+
+
+    products.map(
+        item => item.title
+    ),
+
+
+    products.map(
+        item => Number(item.revenue)
+    ),
+
+
+    "Revenue"
+
+);
 
         renderTable(
 

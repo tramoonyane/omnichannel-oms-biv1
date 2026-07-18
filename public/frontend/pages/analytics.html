@@ -6,15 +6,17 @@
 
     <meta charset="UTF-8">
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>
-
         OMS-BI Analytics
-
     </title>
 
     <link
         rel="stylesheet"
-        href="../assets/css/components.css">
+        href="../assets/css/app.css">
 
 </head>
 
@@ -22,46 +24,191 @@
 
     <div id="navbar"></div>
 
-    <hr>
 
-    <div
-        style="display:flex;">
+    <div class="main">
 
-        <div
-            id="sidebar"
-            style="width:220px;">
-        </div>
+        <div id="sidebar"></div>
 
-        <div
-            style="padding:20px;flex:1;">
 
-            <div
-                id="stats"
-                style="
-                    display:flex;
-                    flex-wrap:wrap;
-                ">
-            </div>
+        <div class="content">
 
-            <hr>
 
-            <div id="daily-sales"></div>
+            <!-- Page Header -->
 
-            <hr>
+            <section class="page-header">
 
-            <div id="top-products"></div>
+                <h1>
+                    Business Analytics
+                </h1>
 
-            <hr>
+                <p>
+                    Monitor sales performance,
+                    inventory health,
+                    inventory valuation
+                    and business insights.
+                </p>
 
-            <div id="high-stock"></div>
+            </section>
 
-            <hr>
 
-            <div id="low-stock"></div>
+
+            <!-- KPI Cards -->
+
+            <section>
+
+                <h2>
+                    Business Overview
+                </h2>
+
+                <div
+                    id="stats"
+                    class="stats-container">
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Sales Trends -->
+
+            <section class="section">
+
+                <h2>
+                    Sales Performance
+                </h2>
+
+                <div class="analytics-grid">
+
+                    <div class="analytics-card">
+
+                        <h3>
+                            Daily Revenue Trend
+                        </h3>
+
+                        <div
+                            id="daily-revenue">
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="analytics-card">
+
+                        <h3>
+                            Daily Orders Trend
+                        </h3>
+
+                        <div
+                            id="daily-orders">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Top Products -->
+
+            <section class="section">
+
+                <h2>
+                    Product Performance
+                </h2>
+
+
+                <div class="analytics-card">
+
+                    <h3>
+                        Top Products by Revenue
+                    </h3>
+
+                    <div
+                        id="top-products-chart">
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="analytics-card">
+
+                    <h3>
+                        Top Products Details
+                    </h3>
+
+                    <div
+                        id="top-products">
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- Inventory -->
+
+            <section class="section">
+
+                <h2>
+                    Inventory Health
+                </h2>
+
+
+                <div class="analytics-grid">
+
+
+                    <div class="analytics-card">
+
+                        <h3>
+                            High Stock Products
+                        </h3>
+
+                        <div
+                            id="high-stock">
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="analytics-card">
+
+                        <h3>
+                            Low Stock Products
+                        </h3>
+
+                        <div
+                            id="low-stock">
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
 
         </div>
 
     </div>
+
+
+    <footer id="footer"></footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script
         type="module"

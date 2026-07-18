@@ -1,11 +1,9 @@
 RewriteEngine On
 
-
-# Do not rewrite existing files
+# Existing files/directories are served normally
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-
-# Send API requests to Slim
-RewriteRule ^ api.php [QSA,L]
+# Only route API requests to Slim
+RewriteRule ^api(/.*)?$ api.php [QSA,L]

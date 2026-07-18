@@ -5,70 +5,232 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
+    <meta 
+        name="viewport" 
         content="width=device-width, initial-scale=1.0">
 
-    <title>OMS-BI Login</title>
+    <title>
+        OmniChannel OMS-BI | Login
+    </title>
+
+
+    <link 
+        rel="stylesheet" 
+        href="../assets/css/login.css">
 
 </head>
 
+
 <body>
 
-    <h1>OmniChannel OMS-BI</h1>
 
-    <form id="loginForm">
+<div class="login-container">
 
-        <div>
 
-            <label for="email">
-                Email
-            </label>
+    <div class="login-card">
 
-            <br>
 
-            <input
-                type="email"
-                id="email"
-                required>
+        <div class="brand">
 
-        </div>
 
-        <br>
+            <h1>
+                OmniChannel OMS-BI
+            </h1>
 
-        <div>
 
-            <label for="password">
-                Password
-            </label>
+            <p>
+                Order Management System & 
+                Business Intelligence Platform
+            </p>
 
-            <br>
-
-            <input
-                type="password"
-                id="password"
-                required>
 
         </div>
 
-        <br>
 
-        <button type="submit">
 
-            Login
+        <form id="loginForm">
 
-        </button>
 
-    </form>
+            <div class="form-group">
 
-    <br>
+                <label for="email">
+                    Email Address
+                </label>
 
-    <div id="message"></div>
 
-    <script
-        type="module"
-        src="../controllers/login.controller.js">
-    </script>
+                <input
+
+                    type="email"
+
+                    id="email"
+
+                    name="email"
+
+                    autocomplete="email"
+
+                    placeholder="Enter your email"
+
+                    required
+
+                >
+
+            </div>
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="password-wrapper">
+
+
+                    <input
+
+                        type="password"
+
+                        id="password"
+
+                        name="password"
+
+                        autocomplete="current-password"
+
+                        placeholder="Enter your password"
+
+                        required
+
+                    >
+
+
+                    <button
+
+                        type="button"
+
+                        id="togglePassword"
+
+                    >
+
+                        Show
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <button
+
+                type="submit"
+
+                id="loginButton"
+
+            >
+
+                Login
+
+            </button>
+
+
+
+        </form>
+
+
+
+
+        <div 
+
+            id="message"
+
+            class="message"
+
+        ></div>
+
+
+
+        <footer>
+
+            Secure JWT Authentication
+
+        </footer>
+
+
+
+    </div>
+
+
+</div>
+
+
+
+<script
+
+    type="module"
+
+    src="../controllers/login.controller.js">
+
+</script>
+
+
+<script>
+
+
+const password =
+    document.getElementById(
+        "password"
+    );
+
+
+const toggle =
+    document.getElementById(
+        "togglePassword"
+    );
+
+
+
+toggle.addEventListener(
+    "click",
+    () => {
+
+
+        if(password.type === "password")
+        {
+
+            password.type = "text";
+
+            toggle.textContent =
+                "Hide";
+
+        }
+
+        else
+
+        {
+
+            password.type = "password";
+
+            toggle.textContent =
+                "Show";
+
+        }
+
+
+    }
+);
+
+
+
+</script>
+
 
 </body>
 
