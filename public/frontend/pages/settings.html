@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+OMS-BI Settings
+</title>
+
+
+<link
+rel="stylesheet"
+href="../assets/css/app.css">
+
+
+</head>
+
+
+<body>
+
+
+<div id="navbar"></div>
+
+
+
+<div class="main">
+
+
+<div id="sidebar"></div>
+
+
+
+
+<div class="content">
+
+
+
+<section class="page-header">
+
+
+<h1>
+Settings
+</h1>
+
+
+<p>
+Manage system preferences and application behaviour.
+</p>
+
+
+</section>
+
+
+
+
+
+
+<!-- =====================
+     APPEARANCE
+===================== -->
+
+
+<section class="section-card">
+
+
+<h2>
+Appearance
+</h2>
+
+
+
+<label>
+
+<input
+
+type="radio"
+
+name="theme"
+
+id="lightTheme"
+
+value="light">
+
+
+Light Mode
+
+
+</label>
+
+
+
+
+<br><br>
+
+
+
+
+<label>
+
+<input
+
+type="radio"
+
+name="theme"
+
+id="darkTheme"
+
+value="dark">
+
+
+Dark Mode
+
+
+</label>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- =====================
+     BUSINESS PREFERENCES
+===================== -->
+
+
+<section class="section-card">
+
+
+<h2>
+Business Preferences
+</h2>
+
+
+
+
+<label for="currency">
+
+Currency
+
+</label>
+
+
+
+<br>
+
+
+
+<select id="currency">
+
+
+<option value="LSL">
+
+Lesotho Loti (LSL)
+
+</option>
+
+
+
+<option value="USD">
+
+US Dollar (USD)
+
+</option>
+
+
+
+</select>
+
+
+
+
+
+
+<br><br>
+
+
+
+
+
+
+<label for="dateFormat">
+
+Date Format
+
+</label>
+
+
+
+<br>
+
+
+
+<select id="dateFormat">
+
+
+<option value="YYYY-MM-DD">
+
+YYYY-MM-DD
+
+</option>
+
+
+
+<option value="DD/MM/YYYY">
+
+DD/MM/YYYY
+
+</option>
+
+
+
+</select>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- =====================
+     NOTIFICATIONS
+===================== -->
+
+
+<section class="section-card">
+
+
+<h2>
+Notifications
+</h2>
+
+
+
+
+<label>
+
+
+<input
+
+type="checkbox"
+
+id="lowStock">
+
+
+Low Stock Alerts
+
+
+</label>
+
+
+
+
+
+<br><br>
+
+
+
+
+
+<label>
+
+
+<input
+
+type="checkbox"
+
+id="orderAlerts">
+
+
+Order Updates
+
+
+</label>
+
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- =====================
+     ACCOUNT INFORMATION
+===================== -->
+
+
+<section class="section-card">
+
+
+<h2>
+Account Information
+</h2>
+
+
+
+
+<p>
+
+Email:
+
+<span id="accountEmail">
+
+</span>
+
+
+</p>
+
+
+
+
+
+<p>
+
+Role:
+
+<span id="accountRole">
+
+</span>
+
+
+</p>
+
+
+
+
+</section>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<footer id="footer"></footer>
+
+
+
+
+
+<script
+
+type="module"
+
+src="../controllers/settings.controller.js">
+
+</script>
+
+
+
+
+
+</body>
+
+
+</html>

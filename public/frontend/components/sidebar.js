@@ -34,6 +34,11 @@ export function renderSidebar(){
         {
             name:"Analytics",
             link:"analytics.html"
+        },
+
+        {
+            name:"Settings",
+            link:"settings.html"
         }
 
     ];

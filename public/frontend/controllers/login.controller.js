@@ -1,5 +1,6 @@
 import { login } from "../services/auth.service.js";
 import { saveToken, saveUser } from "../utils/storage.js";
+import "../utils/theme.js";
 
 
 const form =

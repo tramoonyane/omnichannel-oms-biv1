@@ -33,6 +33,8 @@ import {
 }
 from "../services/analytics.service.js";
 
+import "../utils/theme.js";
+
 
 requireAuth();
 

@@ -23,6 +23,8 @@ import {
 }
 from "../components/table.js";
 
+import "../utils/theme.js";
+
 
 requireAuth();
 

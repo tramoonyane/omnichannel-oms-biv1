@@ -23,6 +23,8 @@ from "../components/table.js";
 import { renderStatCard }
 from "../components/stat-card.js";
 
+import "../utils/theme.js";
+
 
 
 requireAuth();
