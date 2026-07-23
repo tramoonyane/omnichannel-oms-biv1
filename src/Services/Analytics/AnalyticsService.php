@@ -7,38 +7,58 @@ class AnalyticsService
     private InventoryAnalyticsService $inventory;
     private SalesAnalyticsService $sales;
 
-    public function __construct()
-    {
-        $this->inventory = new InventoryAnalyticsService();
-        $this->sales = new SalesAnalyticsService();
+
+    public function __construct(
+        InventoryAnalyticsService $inventory,
+        SalesAnalyticsService $sales
+    ) {
+        $this->inventory = $inventory;
+        $this->sales = $sales;
     }
 
-    // Inventory
+
+    /*
+    |--------------------------------------------------------------------------
+    | INVENTORY ANALYTICS
+    |--------------------------------------------------------------------------
+    */
+
     public function getInventoryOverview(): array
     {
         return $this->inventory->getInventoryOverview();
     }
+
 
     public function getLowStockProducts(): array
     {
         return $this->inventory->getLowStockProducts();
     }
 
+
     public function getHighStockProducts(): array
     {
         return $this->inventory->getHighStockProducts();
     }
 
-    // Sales
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SALES ANALYTICS
+    |--------------------------------------------------------------------------
+    */
+
     public function getSalesOverview(): array
     {
         return $this->sales->getSalesOverview();
     }
 
+
     public function getDailySales(): array
     {
         return $this->sales->getDailySales();
     }
+
 
     public function getTopProducts(): array
     {

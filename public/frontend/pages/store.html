@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        OMS-BI Store
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="../assets/css/app.css">
+
+
+</head>
+
+
+<body>
+
+
+<div id="navbar"></div>
+
+
+
+<div class="main">
+
+
+    <div id="sidebar"></div>
+
+
+
+
+    <div class="content">
+
+
+
+        <section class="page-header">
+
+
+            <h1>
+                Store Management
+            </h1>
+
+
+            <p>
+                Configure your online store and business profile.
+            </p>
+
+
+        </section>
+
+
+
+
+
+
+        <!-- GENERAL INFORMATION -->
+
+
+        <section class="section-card">
+
+
+            <h2>
+                General Information
+            </h2>
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="storeName">
+
+                    Store Name
+
+                </label>
+
+
+
+                <input
+
+                    type="text"
+
+                    id="storeName"
+
+                    placeholder="Enter store name">
+
+            </div>
+
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="description">
+
+                    Business Description
+
+                </label>
+
+
+
+                <textarea
+
+                    id="description"
+
+                    placeholder="Describe your business"></textarea>
+
+
+            </div>
+
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="businessEmail">
+
+                    Business Email
+
+                </label>
+
+
+
+                <input
+
+                    type="email"
+
+                    id="businessEmail"
+
+                    placeholder="store@example.com">
+
+
+            </div>
+
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="phone">
+
+                    Phone Number
+
+                </label>
+
+
+
+                <input
+
+                    type="text"
+
+                    id="phone"
+
+                    placeholder="+266 5XXXXXXX">
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="website">
+
+                    Website
+
+                </label>
+
+
+
+                <input
+
+                    type="url"
+
+                    id="website"
+
+                    placeholder="https://example.com">
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="address">
+
+                    Business Address
+
+                </label>
+
+
+
+                <textarea
+
+                    id="address"
+
+                    placeholder="Enter your business address"></textarea>
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="currency">
+
+                    Currency
+
+                </label>
+
+
+
+
+                <select id="currency">
+
+
+                    <option value="LSL">
+
+                        LSL
+
+                    </option>
+
+
+
+                    <option value="ZAR">
+
+                        ZAR
+
+                    </option>
+
+
+
+                    <option value="USD">
+
+                        USD
+
+                    </option>
+
+
+
+                </select>
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+
+
+
+
+        <!-- BRANDING -->
+
+
+
+        <section class="section-card">
+
+
+            <h2>
+
+                Branding
+
+            </h2>
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="logo">
+
+                    Store Logo URL
+
+                </label>
+
+
+
+
+                <input
+
+                    type="text"
+
+                    id="logo"
+
+                    placeholder="Enter logo URL">
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="banner">
+
+                    Store Banner URL
+
+                </label>
+
+
+
+
+                <input
+
+                    type="text"
+
+                    id="banner"
+
+                    placeholder="Enter banner image URL">
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="form-group">
+
+
+                <label for="primaryColor">
+
+                    Brand Color
+
+                </label>
+
+
+
+
+                <input
+
+                    type="color"
+
+                    id="primaryColor"
+
+                    value="#2563eb">
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+
+
+
+
+
+        <!-- GLOBAL SAVE BUTTON -->
+
+
+
+        <button
+
+            class="btn-primary"
+
+            id="saveStore">
+
+
+            Save Changes
+
+
+        </button>
+
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+<footer id="footer"></footer>
+
+
+
+
+
+<script
+
+    type="module"
+
+    src="../controllers/store.controller.js">
+
+</script>
+
+
+
+
+</body>
+
+
+</html>

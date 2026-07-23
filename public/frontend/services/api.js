@@ -39,14 +39,8 @@ async function request(
     );
 
 
-    const data = await response.json();
-
-
-    if (!response.ok) {
-
-    if (
-        response.status === 401
-    ) {
+    // Handle expired or invalid token first
+    if (response.status === 401) {
 
         clearAuth();
 
@@ -61,20 +55,27 @@ async function request(
 
     }
 
-    throw new Error(
 
-        data.message ||
+    const data = await response.json();
 
-        "API request failed"
 
-    );
+    if (!response.ok) {
 
-}
+        throw new Error(
+
+            data.message ||
+
+            "API request failed"
+
+        );
+
+    }
 
 
     return data;
 
 }
+
 
 
 async function get(endpoint) {
@@ -87,6 +88,7 @@ async function get(endpoint) {
     );
 
 }
+
 
 
 async function post(
@@ -108,6 +110,7 @@ async function post(
 }
 
 
+
 async function put(
     endpoint,
     body
@@ -127,6 +130,7 @@ async function put(
 }
 
 
+
 async function remove(endpoint) {
 
     return request(
@@ -139,6 +143,7 @@ async function remove(endpoint) {
     );
 
 }
+
 
 
 export default {

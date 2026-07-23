@@ -8,21 +8,30 @@ class InventoryAnalyticsService
 {
     private Product $productModel;
 
-    public function __construct()
+
+    public function __construct(Product $productModel)
     {
-        $this->productModel = new Product();
+        $this->productModel = $productModel;
     }
+
 
     public function getInventoryOverview(): array
     {
         $products = $this->productModel->getAll();
 
         $totalProducts = count($products);
+
         $totalStockValue = 0;
 
+
         foreach ($products as $product) {
-            $totalStockValue += $product['price'] * $product['stock_qty'];
+
+            $totalStockValue +=
+                $product['price'] *
+                $product['stock_qty'];
+
         }
+
 
         return [
             "total_products" => $totalProducts,
@@ -30,21 +39,45 @@ class InventoryAnalyticsService
         ];
     }
 
+
+
     public function getLowStockProducts(): array
     {
         $products = $this->productModel->getAll();
 
-        return array_values(array_filter($products, function ($p) {
-            return $p['stock_qty'] <= $p['low_threshold'];
-        }));
+
+        return array_values(
+            array_filter(
+                $products,
+                function ($p) {
+
+                    return $p['stock_qty']
+                        <=
+                        $p['low_threshold'];
+
+                }
+            )
+        );
     }
+
+
 
     public function getHighStockProducts(): array
     {
         $products = $this->productModel->getAll();
 
-        return array_values(array_filter($products, function ($p) {
-            return $p['stock_qty'] > $p['low_threshold'];
-        }));
+
+        return array_values(
+            array_filter(
+                $products,
+                function ($p) {
+
+                    return $p['stock_qty']
+                        >
+                        $p['low_threshold'];
+
+                }
+            )
+        );
     }
 }

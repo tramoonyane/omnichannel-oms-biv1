@@ -8,39 +8,62 @@ class AnalyticsController
 {
     private AnalyticsService $service;
 
-    public function __construct()
-    {
-        $this->service = new AnalyticsService();
+
+    public function __construct(
+        AnalyticsService $service
+    ) {
+        $this->service = $service;
     }
 
-    public function inventoryOverview()
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | INVENTORY ANALYTICS
+    |--------------------------------------------------------------------------
+    */
+
+
+    public function inventoryOverview(): array
     {
         return $this->service->getInventoryOverview();
     }
 
-    public function lowStock()
+
+    public function lowStock(): array
     {
         return $this->service->getLowStockProducts();
     }
 
-    public function highStock()
+
+    public function highStock(): array
     {
         return $this->service->getHighStockProducts();
     }
 
-    public function getSalesOverview()
-{
-return $this->service->getSalesOverview();
-}
 
-public function getDailySales()
-{
-return $this->service->getDailySales();
-}
 
-public function getTopProducts()
-{
-return $this->service->getTopProducts();
-}
+    /*
+    |--------------------------------------------------------------------------
+    | SALES ANALYTICS
+    |--------------------------------------------------------------------------
+    */
 
+
+    public function getSalesOverview(): array
+    {
+        return $this->service->getSalesOverview();
+    }
+
+
+    public function getDailySales(): array
+    {
+        return $this->service->getDailySales();
+    }
+
+
+    public function getTopProducts(): array
+    {
+        return $this->service->getTopProducts();
+    }
 }

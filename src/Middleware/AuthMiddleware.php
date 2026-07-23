@@ -18,14 +18,14 @@ class AuthMiddleware
             return $this->unauthorized('Missing Authorization header.');
         }
 
-        if (!preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
+        // 💡 Utilizing your static helper method to cleanly extract the token
+        $token = Jwt::extractToken($authHeader);
+
+        if (!$token) {
             return $this->unauthorized('Invalid Authorization header format.');
         }
 
-        $token = trim($matches[1]);
-
         try {
-
             $decoded = Jwt::validate($token);
 
             $request = $request->withAttribute('user', (array) $decoded->user);
@@ -33,7 +33,6 @@ class AuthMiddleware
             return $handler->handle($request);
 
         } catch (\Throwable $e) {
-
             return $this->unauthorized($e->getMessage());
         }
     }

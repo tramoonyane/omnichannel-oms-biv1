@@ -2,23 +2,23 @@
 
 namespace Src\Services;
 
-use Src\Core\Database;
+use PDO;
 use Src\Models\Order;
-use Src\Models\Product;
 use Src\Services\InventoryService;
 
 class OrderService
 {
-    private $db;
+    private PDO $db;
     private Order $orderModel;
     private InventoryService $inventoryService;
 
-    public function __construct()
+    // 💡 Pass the dependencies through the constructor. 
+    // Slim 4's Container will automatically resolve and inject these for you.
+    public function __construct(PDO $db, Order $orderModel, InventoryService $inventoryService)
     {
-        $this->db = (new Database())->getConnection();
-
-        $this->orderModel = new Order();
-        $this->inventoryService = new InventoryService();
+        $this->db = $db;
+        $this->orderModel = $orderModel;
+        $this->inventoryService = $inventoryService;
     }
 
     public function createOrder(array $data): array
@@ -32,7 +32,6 @@ class OrderService
         $this->db->beginTransaction();
 
         try {
-
             // 1. Create order header
             $orderId = $this->orderModel->create([
                 'customer_name' => $data['customer_name'] ?? 'Guest',
@@ -41,21 +40,20 @@ class OrderService
 
             // 2. Process items
             foreach ($data['items'] as $item) {
-
                 $productId = $item['product_id'];
                 $quantity = $item['quantity'];
 
-                // 🔥 ALL inventory logic now delegated
+                // All inventory logic delegated to the injected service
                 $product = $this->inventoryService->getProductById($productId);
 
                 if (!$product) {
                     throw new \Exception("Product not found");
                 }
 
-                // stock validation + deduction handled inside InventoryService
+                // Stock validation + deduction handled inside InventoryService
                 $this->inventoryService->reduceStock($productId, $quantity);
 
-                // add order item
+                // Add order item details
                 $this->orderModel->addItem([
                     'order_id' => $orderId,
                     'product_id' => $productId,
@@ -72,7 +70,6 @@ class OrderService
             ];
 
         } catch (\Exception $e) {
-
             $this->db->rollBack();
 
             return [

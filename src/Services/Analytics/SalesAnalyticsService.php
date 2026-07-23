@@ -2,17 +2,19 @@
 
 namespace Src\Services\Analytics;
 
-use Src\Core\Database;
 use PDO;
 
 class SalesAnalyticsService
 {
-    private $db;
+    private PDO $db;
 
-    public function __construct()
+
+    public function __construct(PDO $db)
     {
-        $this->db = (new Database())->getConnection();
+        $this->db = $db;
     }
+
+
 
     public function getSalesOverview(): array
     {
@@ -21,11 +23,14 @@ class SalesAnalyticsService
                 COUNT(DISTINCT o.id) AS total_orders,
                 COALESCE(SUM(oi.quantity * oi.price_at_sale), 0) AS total_revenue
             FROM orders o
-            LEFT JOIN order_items oi ON o.id = oi.order_id
+            LEFT JOIN order_items oi 
+                ON o.id = oi.order_id
         ");
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+
 
     public function getDailySales(): array
     {
@@ -35,13 +40,16 @@ class SalesAnalyticsService
                 COUNT(DISTINCT o.id) AS orders,
                 COALESCE(SUM(oi.quantity * oi.price_at_sale), 0) AS revenue
             FROM orders o
-            LEFT JOIN order_items oi ON o.id = oi.order_id
+            LEFT JOIN order_items oi 
+                ON o.id = oi.order_id
             GROUP BY DATE(o.created_at)
             ORDER BY date ASC
         ");
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
 
     public function getTopProducts(): array
     {
@@ -52,7 +60,8 @@ class SalesAnalyticsService
                 COALESCE(SUM(oi.quantity), 0) AS total_sold,
                 COALESCE(SUM(oi.quantity * oi.price_at_sale), 0) AS revenue
             FROM products p
-            LEFT JOIN order_items oi ON p.id = oi.product_id
+            LEFT JOIN order_items oi 
+                ON p.id = oi.product_id
             GROUP BY p.id, p.title
             ORDER BY total_sold DESC
             LIMIT 5

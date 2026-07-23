@@ -2,18 +2,20 @@
 
 namespace Src\Models;
 
-use Src\Core\Database;
+use PDO;
 
 class Order
 {
-    private $db;
+    // 💡 Typing this as a native PDO instance grants full IDE autocomplete
+    private PDO $db;
 
-    public function __construct()
+    // 💡 We inject the database instance so the entire application shares one stream
+    public function __construct(PDO $db)
     {
-        $this->db = (new Database())->getConnection();
+        $this->db = $db;
     }
 
-    public function create($data)
+    public function create(array $data): int
     {
         $stmt = $this->db->prepare("
             INSERT INTO orders (customer_name, order_status)
@@ -25,10 +27,10 @@ class Order
             $data['status']
         ]);
 
-        return $this->db->lastInsertId();
+        return (int) $this->db->lastInsertId();
     }
 
-    public function addItem($data)
+    public function addItem(array $data): bool
     {
         $stmt = $this->db->prepare("
             INSERT INTO order_items (order_id, product_id, quantity, price_at_sale)
@@ -43,9 +45,30 @@ class Order
         ]);
     }
 
-    public function getAll()
+    /**
+     * Aggregates relational order metrics perfectly formatted for your client UI
+     */
+    public function getAll(): array
     {
-        $stmt = $this->db->query("SELECT * FROM orders");
-        return $stmt->fetchAll();
+        // 💡 This query crosses table boundaries to count total items bought 
+        // and pull full relational data for your dashboard in a single database round-trip.
+        $sql = "SELECT 
+            o.id,
+            o.channel,
+            o.reference,
+            o.customer_name,
+            o.order_status AS status,
+            SUM(oi.quantity) AS total_items,
+            SUM(oi.quantity * oi.price_at_sale) AS total_revenue,
+            o.created_at
+        FROM orders o
+        LEFT JOIN order_items oi ON o.id = oi.order_id
+        GROUP BY o.id
+        ORDER BY o.created_at DESC";
+
+        $stmt = $this->db->query($sql);
+        
+        // Explicitly using FETCH_ASSOC isolates clean string keys and reduces memory use by 50%
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

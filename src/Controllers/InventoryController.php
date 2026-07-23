@@ -8,10 +8,12 @@ class InventoryController
 {
     private Product $productModel;
 
-    public function __construct()
+
+    public function __construct(Product $productModel)
     {
-        $this->productModel = new Product();
+        $this->productModel = $productModel;
     }
+
 
     public function getInventory()
     {

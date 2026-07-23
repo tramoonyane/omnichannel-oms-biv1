@@ -9,15 +9,19 @@ class DashboardController
 {
     private DashboardService $service;
 
-    public function __construct()
+
+    public function __construct(DashboardService $service)
     {
-        $this->service = new DashboardService();
+        $this->service = $service;
     }
+
 
     public function summary(Request $request): array
     {
         $user = $request->getAttribute('user');
-        
-        return $this->service->getSummary($user['role']);
+
+        return $this->service->getSummary(
+            $user['role']
+        );
     }
 }

@@ -8,9 +8,11 @@ class InventoryService
 {
     private Product $productModel;
 
-    public function __construct()
+    // 💡 Dependency Injection: We inject the pre-configured model from the outside.
+    // This ensures it shares the same single PDO database handle as everything else.
+    public function __construct(Product $productModel)
     {
-        $this->productModel = new Product();
+        $this->productModel = $productModel;
     }
 
     public function getAllProducts(): array
@@ -32,18 +34,19 @@ class InventoryService
         }
 
         if ($product['stock_qty'] < $quantity) {
-            throw new \Exception("Insufficient stock");
+            throw new \Exception("Insufficient stock for product: " . $product['name']);
         }
 
         return $this->productModel->reduceStock($productId, $quantity);
     }
 
+    /**
+     * Highly optimized memory handling for business intelligence alerts
+     */
     public function getLowStockProducts(): array
     {
-        $products = $this->productModel->getAll();
-
-        return array_filter($products, function ($product) {
-            return $product['stock_qty'] <= $product['low_threshold'];
-        });
+        // 💡 Instead of fetching everything and using array_filter in PHP,
+        // we delegate the filtering entirely to a dedicated MySQL query.
+        return $this->productModel->getLowStock();
     }
 }

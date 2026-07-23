@@ -7,6 +7,19 @@ use Src\Services\OrderService;
 
 class OrderController
 {
+    private OrderService $orderService;
+    private Order $orderModel;
+
+
+    public function __construct(
+        OrderService $orderService,
+        Order $orderModel
+    ) {
+        $this->orderService = $orderService;
+        $this->orderModel = $orderModel;
+    }
+
+
     public function createOrder()
     {
         $data = json_decode(
@@ -14,15 +27,14 @@ class OrderController
             true
         );
 
-        $service = new OrderService();
 
-        return $service->createOrder($data);
+        return $this->orderService->createOrder($data);
     }
+
+
 
     public function getOrders()
     {
-        $orderModel = new Order();
-
-        return $orderModel->getAll();
+        return $this->orderModel->getAll();
     }
 }

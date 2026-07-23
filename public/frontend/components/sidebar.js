@@ -39,6 +39,11 @@ export function renderSidebar(){
         {
             name:"Settings",
             link:"settings.html"
+        },
+
+        {
+          name:"Store",
+          link:"store.html"
         }
 
     ];

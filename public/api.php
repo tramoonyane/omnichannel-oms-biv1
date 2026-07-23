@@ -17,7 +17,9 @@ use Src\Services\Presentation\ChartService;
 use Src\Middleware\AuthMiddleware;
 use Src\Middleware\RoleMiddleware;
 
+
 require_once __DIR__ . '/../vendor/autoload.php';
+
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,19 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
+
+
+/*
+|--------------------------------------------------------------------------
+| LOAD CONTAINER
+|--------------------------------------------------------------------------
+*/
+
+$container = require __DIR__ . '/../config/container.php';
+
+AppFactory::setContainer($container);
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +54,8 @@ $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
 $app->addErrorMiddleware(true, true, true);
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +71,10 @@ $app->add(function (Request $request, $handler) {
         'Content-Type',
         'application/json'
     );
+
 });
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -62,7 +82,8 @@ $app->add(function (Request $request, $handler) {
 |--------------------------------------------------------------------------
 */
 
-$app->group('/api/v1', function ($group) {
+$app->group('/api/v1', function ($group) use ($container) {
+
 
     /*
     |--------------------------------------------------------------------------
@@ -70,15 +91,26 @@ $app->group('/api/v1', function ($group) {
     |--------------------------------------------------------------------------
     */
 
+
     $group->post('/auth/login', function (
         Request $request,
         Response $response
-    ) {
+    ) use ($container) {
 
-        return (new AuthController())
-            ->login($request, $response);
+
+        $controller = $container->get(
+            AuthController::class
+        );
+
+
+        return $controller->login(
+            $request,
+            $response
+        );
 
     });
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +118,10 @@ $app->group('/api/v1', function ($group) {
     |--------------------------------------------------------------------------
     */
 
-    $group->group('', function ($group) {
+
+    $group->group('', function ($group) use ($container) {
+
+
 
         /*
         |--------------------------------------------------------------------------
@@ -94,15 +129,27 @@ $app->group('/api/v1', function ($group) {
         |--------------------------------------------------------------------------
         */
 
+
         $group->post('/auth/logout', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            return (new AuthController())
-                ->logout($request, $response);
+
+            $controller = $container->get(
+                AuthController::class
+            );
+
+
+            return $controller->logout(
+                $request,
+                $response
+            );
+
 
         });
+
+
 
         /*
         |--------------------------------------------------------------------------
@@ -110,20 +157,35 @@ $app->group('/api/v1', function ($group) {
         |--------------------------------------------------------------------------
         */
 
+
         $group->get('/analytics/dashboard/summary', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new DashboardController();
+
+            $controller = $container->get(
+                DashboardController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->summary($request))
+                json_encode(
+                    $controller->summary($request)
+                )
             );
+
 
             return $response;
 
-        })->add(new RoleMiddleware(['admin', 'manager']));
+
+        })->add(
+            new RoleMiddleware(
+                ['admin', 'manager']
+            )
+        );
+
+
 
         /*
         |--------------------------------------------------------------------------
@@ -131,50 +193,81 @@ $app->group('/api/v1', function ($group) {
         |--------------------------------------------------------------------------
         */
 
+
         $group->get('/analytics/charts/sales-trend', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $charts = new ChartService();
+
+            $charts = $container->get(
+                ChartService::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($charts->salesTrend())
+                json_encode(
+                    $charts->salesTrend()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         $group->get('/analytics/charts/top-products', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $charts = new ChartService();
+
+            $charts = $container->get(
+                ChartService::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($charts->topProducts())
+                json_encode(
+                    $charts->topProducts()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         $group->get('/analytics/charts/inventory', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $charts = new ChartService();
+
+            $charts = $container->get(
+                ChartService::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($charts->inventoryDistribution())
+                json_encode(
+                    $charts->inventoryDistribution()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         /*
         |--------------------------------------------------------------------------
@@ -182,50 +275,81 @@ $app->group('/api/v1', function ($group) {
         |--------------------------------------------------------------------------
         */
 
+
         $group->get('/analytics/sales/overview', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new AnalyticsController();
+
+            $controller = $container->get(
+                AnalyticsController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->getSalesOverview())
+                json_encode(
+                    $controller->getSalesOverview()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         $group->get('/analytics/sales/daily', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new AnalyticsController();
+
+            $controller = $container->get(
+                AnalyticsController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->getDailySales())
+                json_encode(
+                    $controller->getDailySales()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         $group->get('/analytics/sales/top-products', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new AnalyticsController();
+
+            $controller = $container->get(
+                AnalyticsController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->getTopProducts())
+                json_encode(
+                    $controller->getTopProducts()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         /*
         |--------------------------------------------------------------------------
@@ -233,50 +357,81 @@ $app->group('/api/v1', function ($group) {
         |--------------------------------------------------------------------------
         */
 
+
         $group->get('/analytics/inventory', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new AnalyticsController();
+
+            $controller = $container->get(
+                AnalyticsController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->inventoryOverview())
+                json_encode(
+                    $controller->inventoryOverview()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         $group->get('/analytics/inventory/low-stock', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new AnalyticsController();
+
+            $controller = $container->get(
+                AnalyticsController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->lowStock())
+                json_encode(
+                    $controller->lowStock()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         $group->get('/analytics/inventory/high-stock', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new AnalyticsController();
+
+            $controller = $container->get(
+                AnalyticsController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->highStock())
+                json_encode(
+                    $controller->highStock()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         /*
         |--------------------------------------------------------------------------
@@ -284,35 +439,56 @@ $app->group('/api/v1', function ($group) {
         |--------------------------------------------------------------------------
         */
 
+
         $group->post('/orders', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new OrderController();
+
+            $controller = $container->get(
+                OrderController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->createOrder())
+                json_encode(
+                    $controller->createOrder()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         $group->get('/orders', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new OrderController();
+
+            $controller = $container->get(
+                OrderController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->getOrders())
+                json_encode(
+                    $controller->getOrders()
+                )
             );
+
 
             return $response;
 
+
         });
+
+
 
         /*
         |--------------------------------------------------------------------------
@@ -320,24 +496,40 @@ $app->group('/api/v1', function ($group) {
         |--------------------------------------------------------------------------
         */
 
+
         $group->get('/inventory', function (
             Request $request,
             Response $response
-        ) {
+        ) use ($container) {
 
-            $controller = new InventoryController();
+
+            $controller = $container->get(
+                InventoryController::class
+            );
+
 
             $response->getBody()->write(
-                json_encode($controller->getInventory())
+                json_encode(
+                    $controller->getInventory()
+                )
             );
+
 
             return $response;
 
+
         });
 
-    })->add(new AuthMiddleware());
+
+
+    })->add(
+        new AuthMiddleware()
+    );
+
 
 });
+
+
 
 /*
 |--------------------------------------------------------------------------
